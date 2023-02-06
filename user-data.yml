@@ -1,0 +1,46 @@
+#cloud-config
+version: 1
+apt:
+  primary:
+    - uri: http://asi-fs-s.contabo.net/ubuntu/
+      arches:
+        - default
+device_aliases:
+  rootfs: /dev/sda
+disk_setup:
+  rootfs:
+    table_type: mbr
+    layout:
+      - 3
+      - 24
+    overwrite: true
+fs_setup:
+  - device: rootfs.1
+    filesystem: ext4
+  - device: rootfs.2
+    filesystem: ext4
+keyboard:
+  layout: en
+locale: en_US
+mounts:
+  - [ "rootfs.1", "/home" ]
+  - [ "rootfs.2", "/" ]
+ntp:
+  enabled: true
+resize_rootfs: false
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+hostname: s1
+fqdn: s1.nobidev.com
+ssh_pwauth: false
+timezone: Asia/Ho_Chi_Minh
+manage_etc_hosts: true
+preserve_hostname: true
+users:
+  - name: nobi
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
+    ssh_import_id:
+      - gh:nobiit
